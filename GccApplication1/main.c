@@ -14,6 +14,12 @@ char QUARTER = 16;
 char EIGHT = 8;
 char SIXTEENTH = 4;
 
+//hi paul the code rn only reflects the first c being played PORTD PIN1
+// After you solder all the buttons and conncet them to the 8 realys
+//youll have to modify this code so that the Shifted bit is given by what note it is C-C
+// so like portD |= (1<<D) where D would be 1 cause its bit 1
+//please im begging you dont break the realys, they are rated for 100,000 cycles
+
 void custom_delay_ms(unsigned int ms) {
 	unsigned int i;
 	for (i = 0; i < ms; i++) {
