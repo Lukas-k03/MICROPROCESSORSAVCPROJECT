@@ -27,12 +27,12 @@ void custom_delay_ms(unsigned int ms) {
 	}
 }
 
-void playNote(float BPM,char noteDuration){
+void playNote(float BPM,char noteDuration, char port){
 	
 	float n = (60000.0 / BPM) / 16 * noteDuration; // Calculate total duration in milliseconds
-	PORTD |= (1<<0);
+	PORTD |= (1<<port);
 	custom_delay_ms(n/2);
-	PORTD &= ~(1<<0);
+	PORTD &= ~(1<<port);
 	custom_delay_ms(n/2);
 	
 	}
@@ -42,19 +42,14 @@ int main(void)
     while (1) 
     {
 		DDRD = 0xFF;
-		playNote(100,QUARTER); //dont use the sixteenth note it will break the realy
-		playNote(100,QUARTER);
-		playNote(100,QUARTER);
-		playNote(100,QUARTER);
-		
-		playNote(100,EIGHT);
-		playNote(100,EIGHT);
-		playNote(100,EIGHT);
-		playNote(100,EIGHT);
-		playNote(100,EIGHT);
-		playNote(100,EIGHT);
-		playNote(100,EIGHT);
-		playNote(100,EIGHT);
+		playNote(100,QUARTER,0);
+		playNote(100,QUARTER,1); //dont use the sixteenth note it will break the realy
+		playNote(100,QUARTER,2);
+		playNote(100,QUARTER,3);
+		playNote(100,QUARTER,4);
+		playNote(100,QUARTER,5); //dont use the sixteenth note it will break the realy
+		playNote(100,QUARTER,6);
+		playNote(100,QUARTER,7);
 		
 		}
 		
