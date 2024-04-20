@@ -56,11 +56,51 @@ void shiftRegisterDisplay(char bar){
 		PORTD |= (1<<2);
 		
 	}
-void playNote(float BPM,char noteDuration, char port){
+void playNote(float BPM,char noteDuration, char note){
+	char shift;
+	char octave;
+	
+	switch(note){
+		case 0: shift = 0; octave = 0;
+		case 1: shift = 1; octave = 0;
+		case 2: shift = 2; octave = 0;
+		case 3: shift = 3; octave = 0;
+		case 4: shift = 4; octave = 0;
+		case 5: shift = 5; octave = 0;
+		case 6: shift = 6; octave = 0;
+		case 7: shift = 7; octave = 0;
+		case 8: shift = 0; octave = 1;
+		case 9: shift = 1; octave = 1;
+		case 10: shift = 2; octave = 1;
+		case 11: shift = 3; octave = 1;
+		case 12: shift = 4; octave = 1;
+		case 13: shift = 5; octave = 1;
+		case 14: shift = 6; octave = 1;
+		case 15: shift = 7; octave = 1;
+		case 16: shift = 0; octave = 2;
+		case 17: shift = 1; octave = 2;
+		case 18: shift = 2; octave = 2;
+		case 19: shift = 3; octave = 2;
+		case 20: shift = 4; octave = 2;
+		case 21: shift = 5; octave = 2;
+        case 22: shift = 6; octave = 2;
+		case 23: shift = 7; octave = 2;
+		case 24: shift = 0; octave = 3;
+		case 25: shift = 1; octave = 3;
+		case 26: shift = 2; octave = 3;
+		case 27: shift = 3; octave = 3;
+		case 28: shift = 4; octave = 3;
+		case 29: shift = 5; octave = 3;
+		case 30: shift = 6; octave = 3;
+		case 31: shift = 7; octave = 3;
+	
+	}
 	
 	float n = ((60000.0 / BPM) / 4) * noteDuration; // Calculate total duration in milliseconds
-	shiftRegisterDisplay(1<<port);
+	PORTD |= (1<<octave);
+	shiftRegisterDisplay(1<<shift);
 	custom_delay_ms(n/2); // hey dont remove the delay - spencer
+	PORTD &=~(1<<octave);
 	shiftRegisterDisplay(0);
 	custom_delay_ms(n/2);
 	}
@@ -69,54 +109,14 @@ int main(void)
     while (1) 
     {
 		DDRD = 0xFF;
+		//starts on E3 Goes until C6 each half step is one incrament 
 		
-		PORTD |= (1<<3);
-		playNote(100,QUARTER,0);
-		playNote(100,QUARTER,1); //dont use the sixteenth note it will break the realy
-		playNote(100,QUARTER,2);
-		playNote(100,QUARTER,3);
-		playNote(100,QUARTER,4);
-		playNote(100,QUARTER,5); //dont use the sixteenth note it will break the realy
-		playNote(100,QUARTER,6);
-		playNote(100,QUARTER,7);
-		PORTD &= ~(1<<3);
-		PORTD |= (1<<4);
-		playNote(100,QUARTER,0);
-		playNote(100,QUARTER,1); //dont use the sixteenth note it will break the realy
-		playNote(100,QUARTER,2);
-		playNote(100,QUARTER,3);
-		playNote(100,QUARTER,4);
-		playNote(100,QUARTER,5); //dont use the sixteenth note it will break the realy
-		playNote(100,QUARTER,6);
-		playNote(100,QUARTER,7);
-		PORTD &= ~(1<<4);
-		PORTD |= (1<<5);
-		playNote(100,QUARTER,0);
-		playNote(100,QUARTER,1); //dont use the sixteenth note it will break the realy
-		playNote(100,QUARTER,2);
-		playNote(100,QUARTER,3);
-		playNote(100,QUARTER,4);
-		playNote(100,QUARTER,5); //dont use the sixteenth note it will break the realy
-		playNote(100,QUARTER,6);
-		playNote(100,QUARTER,7);
-		PORTD &= ~(1<<5);
-		PORTD |= (1<<6);
-		playNote(100,QUARTER,0);
-		playNote(100,QUARTER,1); //dont use the sixteenth note it will break the realy
-		playNote(100,QUARTER,2);
-		playNote(100,QUARTER,3);
-		playNote(100,QUARTER,4);
-		playNote(100,QUARTER,5); //dont use the sixteenth note it will break the realy
-		playNote(100,QUARTER,6);
-		playNote(100,QUARTER,7);
-		PORTD &= ~(1<<6);
 		
+		playNote(100,QUARTER,0);
+		_delay_ms(1000);
 		
 		}
 		
 		//the problem is the SIPO is taking time to rese
 		
 }
-
-
-
