@@ -9,6 +9,7 @@
 #define F_CPU 16000000UL
 #include "util/delay.h"
 #include <avr/interrupt.h>
+#include <string.h>
 
 char QUARTER = 4;
 char EIGHT = 2;
@@ -56,67 +57,113 @@ void shiftRegisterDisplay(char bar){
 		PORTD |= (1<<2);
 		
 	}
+	
 void playNote(float BPM,char noteDuration, char note){
 	char shift;
 	char octave;
 	
 	switch(note){
-		case 0: shift = 0; octave = 0;
-		case 1: shift = 1; octave = 0;
-		case 2: shift = 2; octave = 0;
-		case 3: shift = 3; octave = 0;
-		case 4: shift = 4; octave = 0;
-		case 5: shift = 5; octave = 0;
-		case 6: shift = 6; octave = 0;
-		case 7: shift = 7; octave = 0;
-		case 8: shift = 0; octave = 1;
-		case 9: shift = 1; octave = 1;
-		case 10: shift = 2; octave = 1;
-		case 11: shift = 3; octave = 1;
-		case 12: shift = 4; octave = 1;
-		case 13: shift = 5; octave = 1;
-		case 14: shift = 6; octave = 1;
-		case 15: shift = 7; octave = 1;
-		case 16: shift = 0; octave = 2;
-		case 17: shift = 1; octave = 2;
-		case 18: shift = 2; octave = 2;
-		case 19: shift = 3; octave = 2;
-		case 20: shift = 4; octave = 2;
-		case 21: shift = 5; octave = 2;
-        case 22: shift = 6; octave = 2;
-		case 23: shift = 7; octave = 2;
-		case 24: shift = 0; octave = 3;
-		case 25: shift = 1; octave = 3;
-		case 26: shift = 2; octave = 3;
-		case 27: shift = 3; octave = 3;
-		case 28: shift = 4; octave = 3;
-		case 29: shift = 5; octave = 3;
-		case 30: shift = 6; octave = 3;
-		case 31: shift = 7; octave = 3;
+		case 0: shift = 0; octave = 0; break;
+		case 1: shift = 1; octave = 0; break;
+		case 2: shift = 2; octave = 0; break;
+		case 3: shift = 3; octave = 0; break;
+		case 4: shift = 4; octave = 0; break;
+		case 5: shift = 5; octave = 0; break;
+		case 6: shift = 6; octave = 0; break;
+		case 7: shift = 7; octave = 0; break;
+		case 8: shift = 0; octave = 1; break;
+		case 9: shift = 1; octave = 1; break;
+		case 10: shift = 2; octave = 1; break;
+		case 11: shift = 3; octave = 1; break;
+		case 12: shift = 4; octave = 1; break;
+		case 13: shift = 5; octave = 1; break;
+		case 14: shift = 6; octave = 1; break;
+		case 15: shift = 7; octave = 1; break;
+		case 16: shift = 0; octave = 2; break;
+		case 17: shift = 1; octave = 2; break;
+		case 18: shift = 2; octave = 2; break;
+		case 19: shift = 3; octave = 2; break;
+		case 20: shift = 4; octave = 2; break;
+		case 21: shift = 5; octave = 2; break;
+        case 22: shift = 6; octave = 2; break;
+		case 23: shift = 7; octave = 2; break;
+		case 24: shift = 0; octave = 3; break;
+		case 25: shift = 1; octave = 3; break;
+		case 26: shift = 2; octave = 3; break;
+		case 27: shift = 3; octave = 3; break;
+		case 28: shift = 4; octave = 3; break;
+		case 29: shift = 5; octave = 3; break;
+		case 30: shift = 6; octave = 3; break;
+		case 31: shift = 7; octave = 3; break;
+		default: shift = 0; octave = 0;
 	
 	}
 	
 	float n = ((60000.0 / BPM) / 4) * noteDuration; // Calculate total duration in milliseconds
-	PORTD |= (1<<octave);
+	PORTD |= (1<<(octave+3));
 	shiftRegisterDisplay(1<<shift);
 	custom_delay_ms(n/2); // hey dont remove the delay - spencer
-	PORTD &=~(1<<octave);
+	PORTD &=~(1<<(octave+3));
 	shiftRegisterDisplay(0);
 	custom_delay_ms(n/2);
 	}
+	
+void OdeToJoy(float BPM) {
+	playNote(BPM,QUARTER,7);
+	playNote(BPM,QUARTER,7);
+	playNote(BPM,QUARTER,8);
+	playNote(BPM,QUARTER,10);
+	
+	playNote(BPM,QUARTER,10);
+	playNote(BPM,QUARTER,8);
+	playNote(BPM,QUARTER,7);
+	playNote(BPM,QUARTER,5);
+	
+	playNote(BPM,QUARTER,3);
+	playNote(BPM,QUARTER,3);
+	playNote(BPM,QUARTER,5);
+	playNote(BPM,QUARTER,7);
+	
+	playNote(BPM,QUARTER+EIGHT,7);
+	playNote(BPM,EIGHT,5);
+	playNote(BPM,QUARTER+QUARTER,5);
+	
+	playNote(BPM,QUARTER,7);
+	playNote(BPM,QUARTER,7);
+	playNote(BPM,QUARTER,8);
+	playNote(BPM,QUARTER,10);
+	
+	playNote(BPM,QUARTER,10);
+	playNote(BPM,QUARTER,8);
+	playNote(BPM,QUARTER,7);
+	playNote(BPM,QUARTER,5);
+	
+	playNote(BPM,QUARTER,3);
+	playNote(BPM,QUARTER,3);
+	playNote(BPM,QUARTER,5);
+	playNote(BPM,QUARTER,7);
+	
+	playNote(BPM,QUARTER+EIGHT,5);
+	playNote(BPM,EIGHT,3);
+	playNote(BPM,QUARTER+QUARTER,3);
+	
+	
+}
+
+
 int main(void)
 {
-    while (1) 
-    {
+     
+    
 		DDRD = 0xFF;
 		//starts on E3 Goes until C6 each half step is one incrament 
 		
 		
-		playNote(100,QUARTER,0);
-		_delay_ms(1000);
 		
-		}
-		
+	
+		OdeToJoy(150);
 		//the problem is the SIPO is taking time to rese
 		
+
 }
+
